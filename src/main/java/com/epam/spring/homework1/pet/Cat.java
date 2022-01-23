@@ -1,0 +1,16 @@
+package com.epam.spring.homework1.pet;
+
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+/**
+ * Simple bean Cat
+ */
+@Component
+@Order(2)
+public class Cat implements Animal {
+
+    public String getPet() {
+        return "Cat";
+    }
+}
