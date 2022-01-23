@@ -5,6 +5,9 @@ import com.epam.spring.homework1.pet.Spider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
 
+/**
+ * Configuration file for pet's beans, excluding spider
+ */
 @Configuration
 @ComponentScan(basePackages = {"com.epam.spring.homework1.pet"},
         excludeFilters = {
