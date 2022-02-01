@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
@@ -26,7 +26,7 @@ public class ProductDto {
     @JsonProperty(access = READ_ONLY)
     public String id;
 
-    @NotBlank
+    @NotEmpty(message = "{login.notempty}")
     public String name;
 
     @ValidDescription

@@ -61,10 +61,9 @@ public class ProductService {
         productDAO.deleteProduct(product);
     }
 
-    public String addNewProduct(ProductDto productDto) throws DaoException {
+    public Product addNewProduct(ProductDto productDto) throws DaoException {
         Product product = ProductMapper.INSTANCE.mapProduct(productDto);
-       // productDAO.save(product)Product
-        return "Create new product";
+        return productDAO.save(product);
     }
 
     private ProductDto mapProductToProductDto(Product product) {

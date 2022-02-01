@@ -14,7 +14,7 @@ public class DescriptionValidator implements ConstraintValidator<ValidDescriptio
 
     @Override
     public boolean isValid(String productDescription, ConstraintValidatorContext cxt) {
-        return productDescription.split(" ").length > 2;
+        return productDescription.split(" ").length > 1;
     }
 
 }

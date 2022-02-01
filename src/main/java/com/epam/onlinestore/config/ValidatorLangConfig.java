@@ -10,7 +10,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 * Class for internalisation of validator
 */
 @Configuration
-public class ValidatorConfig {
+public class ValidatorLangConfig {
     // Beans for internationalization
     @Bean
     public MessageSource messageSource() {

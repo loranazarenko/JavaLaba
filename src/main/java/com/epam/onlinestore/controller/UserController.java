@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Restcontroller for working with users
@@ -27,14 +26,16 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/")
-    public List<UserDto> getAllUsers() throws SQLException, DaoException {
-        return userService.getListOfUsers();
+    public String getAllUsers() throws SQLException, DaoException {
+       // return userService.getListOfUsers();
+        return " list of users";
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{login}")
-    public UserDto getUser(@PathVariable String login) throws DaoException {
-        return userService.getByLogin(login);
+    public String getUser(@PathVariable String login) throws DaoException {
+       // return userService.getByLogin(login);
+        return " Return the user";
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -45,19 +46,21 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/")
-    public UserDto createUser(@RequestBody UserDto userDto) throws SQLException, DaoException {
-        return userService.createUser(userDto);
+    public String createUser(@RequestBody UserDto userDto) throws SQLException, DaoException {
+       // return userService.createUser(userDto);
+        return "Create user";
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{login}")
-    public UserDto updateUser(@PathVariable String login, @RequestBody UserDto userDto) throws DaoException {
-        return userService.updateUser(login, userDto);
+    public String updateUser(@PathVariable String login, @RequestBody UserDto userDto) throws DaoException {
+       // return userService.updateUser(login, userDto);
+        return "edit user";
     }
 
     @DeleteMapping(value = "/{login}")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        userService.deleteUser(login);
+      //  userService.deleteUser(login);
         return ResponseEntity.noContent().build();
     }
 
