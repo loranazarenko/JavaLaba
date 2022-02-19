@@ -53,5 +53,4 @@ public class OtherConfig {
     public BeanC getBeanC() {
         return new BeanC(nameC, valueC);
     }
-
 }

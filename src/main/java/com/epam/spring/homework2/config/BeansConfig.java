@@ -20,5 +20,4 @@ public class BeansConfig {
     public BeanF getBeanF() {
         return new BeanF();
     }
-
 }

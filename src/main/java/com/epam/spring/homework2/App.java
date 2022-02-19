@@ -16,7 +16,6 @@ public class App {
         for (String bean : context.getBeanDefinitionNames()) {
             System.out.println(bean);
         }
-
         context.close();
     }
 }
