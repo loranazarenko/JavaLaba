@@ -1,15 +1,13 @@
 package com.epam.onlinestore.service;
 
 import com.epam.onlinestore.controller.dto.ProductDto;
-import com.epam.onlinestore.dao.impl.ProductDAOImpl;
 import com.epam.onlinestore.entity.Product;
-import com.epam.onlinestore.exception.DaoException;
 import com.epam.onlinestore.exception.EntityNotFoundException;
+import com.epam.onlinestore.repository.impl.ProductRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,18 +21,11 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private ProductDAOImpl productDAO;
+    private final ProductRepositoryImpl productRepository = new ProductRepositoryImpl();
 
-    {
-        try {
-            productDAO = new ProductDAOImpl();
-        } catch (SQLException e) {
-            log.error(String.valueOf(e));
-        }
-    }
-
-    public ProductDto getProductById(Long productId) throws DaoException {
-        Product product = productDAO.getProductsById(productId);
+    public ProductDto getProductById(Long productId) {
+        log.info("get Product with id {}", productId);
+        Product product = productRepository.getProductsById(productId);
         if (product == null) {
             throw new EntityNotFoundException(format("Product with id %s not found", productId));
         }
@@ -42,28 +33,33 @@ public class ProductService {
     }
 
     public List<ProductDto> getAllProductsDto() {
-        return productDAO.findAll()
+        log.info("get all Products");
+        return productRepository.findAll()
                 .stream()
                 .map(this::mapProductToProductDto)
                 .collect(Collectors.toList());
 
     }
 
-    public void updateProduct(int id, ProductDto productDto) {
+    public ProductDto updateProduct(String name, ProductDto productDto) {
+        log.info("update Product with name {}", name);
         Product product = ProductMapper.INSTANCE.mapProduct(productDto);
-        product.setId(id);
-        productDAO.updateProduct(product);
+        product = productRepository.updateProduct(name, product);
+        return ProductMapper.INSTANCE.mapProductDto(product);
     }
 
-    public void deleteProduct(long id) throws DaoException {
+    public void deleteProduct(long id) {
+        log.info("delete Product with id {} ", id);
         ProductDto productDto = getProductById(id);
         Product product = ProductMapper.INSTANCE.mapProduct(productDto);
-        productDAO.deleteProduct(product);
+        productRepository.deleteProduct(product);
     }
 
-    public Product addNewProduct(ProductDto productDto) throws DaoException {
+    public ProductDto addNewProduct(ProductDto productDto) {
+        log.info("create new Product with name {} ", productDto.getName());
         Product product = ProductMapper.INSTANCE.mapProduct(productDto);
-        return productDAO.save(product);
+        product = productRepository.save(product);
+        return ProductMapper.INSTANCE.mapProductDto(product);
     }
 
     private ProductDto mapProductToProductDto(Product product) {
@@ -71,14 +67,6 @@ public class ProductService {
                 .name(product.getName())
                 .price(product.getPrice())
                 .quantity(product.getQuantity())
-                .build();
-    }
-
-    private Product mapProductDtoToProduct(ProductDto productDto) {
-        return Product.builder()
-                .name(productDto.getName())
-                .price(productDto.getPrice())
-                .quantity(productDto.getQuantity())
                 .build();
     }
 

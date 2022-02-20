@@ -1,7 +1,6 @@
 package com.epam.onlinestore.controller;
 
 import com.epam.onlinestore.controller.dto.UserDto;
-import com.epam.onlinestore.exception.DaoException;
 import com.epam.onlinestore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
+import java.util.List;
 
 /**
- * Restcontroller for working with users
+ * Rest controller for working with users
  */
 @Slf4j
 @RestController
@@ -26,42 +25,31 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/")
-    public String getAllUsers() throws SQLException, DaoException {
-       // return userService.getListOfUsers();
-        return " list of users";
+    public List<UserDto> getAllUsers() {
+        return userService.getListOfUsers();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{login}")
-    public String getUser(@PathVariable String login) throws DaoException {
-       // return userService.getByLogin(login);
-        return " Return the user";
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{email}")
-    public String getUserByEmail(@PathVariable String email) throws DaoException {
-        return userService.getByEmail(email);
+    public UserDto getUser(@PathVariable String login) {
+        return userService.getByLogin(login);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/")
-    public String createUser(@RequestBody UserDto userDto) throws SQLException, DaoException {
-       // return userService.createUser(userDto);
-        return "Create user";
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        return userService.createUser(userDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(value = "/{login}")
-    public String updateUser(@PathVariable String login, @RequestBody UserDto userDto) throws DaoException {
-       // return userService.updateUser(login, userDto);
-        return "edit user";
+    public UserDto updateUser(@PathVariable String login, @RequestBody UserDto userDto) {
+        return userService.updateUser(login, userDto);
     }
 
     @DeleteMapping(value = "/{login}")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-      //  userService.deleteUser(login);
+        userService.deleteUser(login);
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -1,6 +1,5 @@
 package com.epam.onlinestore.controller;
 
-import com.epam.onlinestore.exception.DaoException;
 import com.epam.onlinestore.exception.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
-* Class for handling errors
-*/
+ * Class for handling errors
+ */
 @Slf4j
 @RestControllerAdvice
 public class ErrorHandler {
@@ -40,12 +39,4 @@ public class ErrorHandler {
     public String handleNullPointerException(NullPointerException ex) {
         return ex.getMessage();
     }
-
-    @ExceptionHandler(DaoException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleDaoException(DaoException ex) {
-        return ex.getMessage();
-    }
-
-
 }

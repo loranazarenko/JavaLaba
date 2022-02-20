@@ -1,7 +1,6 @@
 package com.epam.onlinestore.controller;
 
 import com.epam.onlinestore.controller.dto.ProductDto;
-import com.epam.onlinestore.exception.DaoException;
 import com.epam.onlinestore.service.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,10 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
-* RestController for working with products and api for swagger
-*/
+ * RestController for working with products and api for swagger
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -35,40 +35,34 @@ public class ProductController {
     @ApiOperation("Get all products")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/product")
-    public String getAllProducts() {
-     //   productService.getAllProductsDto();
-        return "get all products";
+    public List<ProductDto> getAllProducts() {
+        return productService.getAllProductsDto();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation("Get product by id")
     @GetMapping("/product/{id}")
-    public String getProductById(@PathVariable("id") long id) throws DaoException {
-      // ProductDto product = productService.getProductById(id);
-        return "get product";
+    public ProductDto getProductById(@PathVariable("id") long id) {
+        return productService.getProductById(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/product/{id}")
-    public String editProduct(@PathVariable("id") Long id,
-                              @Valid @RequestBody ProductDto productDto) {
-       // productService.updateProduct(Math.toIntExact(id), productDto);
-        return "edit product";
+    @PutMapping("/product/{name}")
+    public ProductDto editProduct(@PathVariable("name") String name,
+                                  @Valid @RequestBody ProductDto productDto) {
+        return productService.updateProduct(name, productDto);
     }
 
     @ApiOperation("Delete product")
     @DeleteMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") long id) throws DaoException {
-       // productService.deleteProduct(id);
-        return "delete product";
+    public void deleteProduct(@PathVariable("id") long id) {
+        productService.deleteProduct(id);
     }
 
     @ApiOperation("Create product")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/product")
-    public String createProduct(@Valid @RequestBody ProductDto productDto) throws DaoException {
-     //   productService.addNewProduct(productDto);
-        return "Create product";
+    public ProductDto createProduct(@Valid @RequestBody ProductDto productDto) {
+        return productService.addNewProduct(productDto);
     }
-
 }
