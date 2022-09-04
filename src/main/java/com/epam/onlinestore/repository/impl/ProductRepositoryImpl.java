@@ -1,9 +1,10 @@
 package com.epam.onlinestore.repository.impl;
 
 import com.epam.onlinestore.entity.Product;
+import com.epam.onlinestore.exception.ProductNotFoundException;
 import com.epam.onlinestore.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * a Layer class that contains methods for working with a database with a Product
  */
 @Slf4j
-@Component
+@Repository
 public class ProductRepositoryImpl implements ProductRepository {
     private final List<Product> productList = new ArrayList<>();
 
@@ -20,7 +21,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productList.stream()
                 .filter(product -> product.getId() == productId)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Product is not found!"));
+                .orElseThrow(() -> new ProductNotFoundException("Product is not found!"));
     }
 
     public List<Product> findAll() {
@@ -32,7 +33,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (isDeleted) {
             productList.add(product);
         } else {
-            throw new RuntimeException("Product is not found!");
+            throw new ProductNotFoundException("Product is not found!");
         }
         return product;
     }

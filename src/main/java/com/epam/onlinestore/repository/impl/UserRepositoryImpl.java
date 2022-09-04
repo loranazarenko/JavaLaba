@@ -1,9 +1,11 @@
 package com.epam.onlinestore.repository.impl;
 
 import com.epam.onlinestore.entity.User;
+import com.epam.onlinestore.exception.ProductNotFoundException;
+import com.epam.onlinestore.exception.UserNotFoundException;
 import com.epam.onlinestore.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
  * a Layer class that contains methods for working with a database with a User
  */
 @Slf4j
-@Component
+@Repository
 public class UserRepositoryImpl implements UserRepository {
     private final List<User> userList = new ArrayList<>();
 
@@ -21,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
         return userList.stream()
                 .filter(user -> user.getLogin().equals(login))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("User is not found!"));
+                .orElseThrow(() -> new UserNotFoundException("User is not found!"));
     }
 
     @Override
