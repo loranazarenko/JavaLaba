@@ -1,6 +1,5 @@
-package com.epam.onlinestore.controller.dto;
+package com.epam.onlinestore.dto;
 
-import com.epam.onlinestore.controller.validation.ValidDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +7,8 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
@@ -17,25 +16,34 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
  * DTO class for fast serialization and transfer to the Internet
  */
 @Slf4j
-@Builder
 @Data
+@Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
+public class UserDto {
 
     @JsonProperty(access = READ_ONLY)
     public String id;
 
-    @NotEmpty(message = "{login.notempty}")
-    public String name;
+    @NotBlank
+    private String firstName;
 
-    @ValidDescription
-    public String description;
+    @NotBlank
+    private String lastName;
 
-    @Positive
-    public double price;
+    @NotBlank
+    private String login;
 
-    @Positive
-    public int quantity;
+    @NotBlank
+    private String email;
+
+    @NotBlank
+    private String password;
 
 }
+
+
+
+
+
+

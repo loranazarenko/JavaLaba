@@ -1,14 +1,14 @@
 package com.epam.onlinestore.controller;
 
-import com.epam.onlinestore.controller.dto.ProductDto;
+import com.epam.onlinestore.dto.ProductDto;
+import com.epam.onlinestore.entity.Product;
 import com.epam.onlinestore.service.ProductService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +20,14 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/")
 @RequiredArgsConstructor
-@Api(tags = "API description for SWAGGER documentation")
-@ApiResponses({
-        @ApiResponse(code = 404, message = "Not found"),
-        @ApiResponse(code = 500, message = "Internal Server Error")
-})
+
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @ApiOperation("Get all products")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/product")
     public List<ProductDto> getAllProducts() {
@@ -40,7 +35,6 @@ public class ProductController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation("Get product by id")
     @GetMapping("/product/{id}")
     public ProductDto getProductById(@PathVariable("id") long id) {
         return productService.getProductById(id);
@@ -53,16 +47,27 @@ public class ProductController {
         return productService.updateProduct(name, productDto);
     }
 
-    @ApiOperation("Delete product")
     @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable("id") long id) {
         productService.deleteProduct(id);
     }
 
-    @ApiOperation("Create product")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/product")
     public ProductDto createProduct(@Valid @RequestBody ProductDto productDto) {
         return productService.addNewProduct(productDto);
     }
+
+    @GetMapping("/showProductsByPage/{page}")
+    public String showProductController(@PathVariable("page") int page) {
+        PageRequest pageRequest = PageRequest.of(page, 5, Sort.by("price").descending().and(Sort.by("name")));
+        Page<Product> productPage = productService.findAllByPrice(10, pageRequest);
+        for (int i = 0; i < productPage.getContent().size(); i++) {
+            log.info(String.valueOf(productPage.getContent().get(i)));
+            log.info(String.valueOf(productPage.getTotalElements()));
+        }
+        return "/showProducts";
+    }
+
+
 }

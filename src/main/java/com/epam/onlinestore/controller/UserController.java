@@ -1,6 +1,6 @@
 package com.epam.onlinestore.controller;
 
-import com.epam.onlinestore.controller.dto.UserDto;
+import com.epam.onlinestore.dto.UserDto;
 import com.epam.onlinestore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +31,14 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{login}")
-    public UserDto getUser(@PathVariable String login) {
+    public UserDto getByLogin(@PathVariable String login) {
         return userService.getByLogin(login);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{email}")
+    public UserDto getByEmail(@PathVariable String email) {
+        return userService.getByEmail(email);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,13 +1,15 @@
 package com.epam.onlinestore.service;
 
-import com.epam.onlinestore.controller.dto.ProductDto;
+import com.epam.onlinestore.dto.ProductDto;
 import com.epam.onlinestore.entity.Product;
 import com.epam.onlinestore.exception.EntityNotFoundException;
-import com.epam.onlinestore.repository.impl.ProductRepositoryImpl;
+import com.epam.onlinestore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,11 +23,15 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductRepositoryImpl productRepository = new ProductRepositoryImpl();
+    private final ProductRepository productRepository;
+
+    public Page<Product> findAllByPrice(double price, Pageable pageable) {
+        return productRepository.findAllByPrice(price, pageable);
+    }
 
     public ProductDto getProductById(Long productId) {
         log.info("get Product with id {}", productId);
-        Product product = productRepository.getProductsById(productId);
+        Product product = productRepository.getProductById(productId);
         if (product == null) {
             throw new EntityNotFoundException(format("Product with id %s not found", productId));
         }
@@ -44,15 +50,16 @@ public class ProductService {
     public ProductDto updateProduct(String name, ProductDto productDto) {
         log.info("update Product with name {}", name);
         Product product = ProductMapper.INSTANCE.mapProduct(productDto);
-        product = productRepository.updateProduct(name, product);
+        product = productRepository.save(product);
         return ProductMapper.INSTANCE.mapProductDto(product);
     }
+
 
     public void deleteProduct(long id) {
         log.info("delete Product with id {} ", id);
         ProductDto productDto = getProductById(id);
         Product product = ProductMapper.INSTANCE.mapProduct(productDto);
-        productRepository.deleteProduct(product);
+        productRepository.delete(product);
     }
 
     public ProductDto addNewProduct(ProductDto productDto) {
