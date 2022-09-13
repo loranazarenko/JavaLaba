@@ -3,6 +3,7 @@ package com.epam.onlinestore.controller;
 import com.epam.onlinestore.dto.ProductDto;
 import com.epam.onlinestore.entity.Product;
 import com.epam.onlinestore.service.ProductService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
-
+@AllArgsConstructor
 public class ProductController {
 
     @Autowired
@@ -41,15 +43,16 @@ public class ProductController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/product/{name}")
-    public ProductDto editProduct(@PathVariable("name") String name,
-                                  @Valid @RequestBody ProductDto productDto) {
-        return productService.updateProduct(name, productDto);
+    @PutMapping("/product/{id}")
+    public ProductDto updateProduct(@PathVariable("id") Long id,
+                                    @Valid @RequestBody ProductDto productDto) {
+        return productService.updateProduct(id, productDto);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable("id") long id) {
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
+        return new ResponseEntity<>("Product deleted successfully!.", HttpStatus.OK);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,6 +71,4 @@ public class ProductController {
         }
         return "/showProducts";
     }
-
-
 }

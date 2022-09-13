@@ -1,6 +1,6 @@
 package com.epam.onlinestore.dto;
 
-import com.epam.onlinestore.controller.validation.ValidDescription;
+import com.epam.onlinestore.exception.validation.ValidDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 public class ProductDto {
 
     @JsonProperty(access = READ_ONLY)
-    public String id;
+    public Long id;
 
     @NotEmpty(message = "{login.notempty}")
     public String name;

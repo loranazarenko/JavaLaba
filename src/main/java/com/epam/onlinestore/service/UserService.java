@@ -40,14 +40,9 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto getByLogin(String login) {
-        log.info("get User with login {}", login);
-        User user = userRepository.findByLogin(login).orElse(null);
-        if (user == null) {
-            log.error("No such user!");
-            return null;
-        }
-        return mapUserToUserDto(user);
+    public List<User> getAllUsers() {
+        log.info("get all Users");
+        return userRepository.findAll();
     }
 
     public UserDto getByEmail(String email) {
@@ -60,22 +55,19 @@ public class UserService {
         return mapUserToUserDto(user);
     }
 
-    public UserDto updateUser(String login, UserDto userDto) {
-        log.info("updateUser with login {}", login);
+    public UserDto updateUser(Long id, UserDto userDto) {
+        log.info("updateUser with Id {}", id);
         User user = mapUserDtoToUser(userDto);
         user = userRepository.save(user);
         return mapUserToUserDto(user);
     }
 
-    public void deleteUser(String login) {
-        log.info("deleteUser with login {}", login);
-        User userFromBase = userRepository.getByLogin(login);
-        if (userFromBase != null) {
-            userRepository.delete(userFromBase);
-        } else log.info("No such user!");
+    public void deleteUser(String email) {
+        log.info("deleteUser with email {}", email);
+        userRepository.deleteUser(email);
     }
 
-    private UserDto mapUserToUserDto(User user) {
+    public UserDto mapUserToUserDto(User user) {
         return UserDto.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -85,7 +77,7 @@ public class UserService {
                 .build();
     }
 
-    private User mapUserDtoToUser(UserDto userDto) {
+    public User mapUserDtoToUser(UserDto userDto) {
         return User.builder()
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())

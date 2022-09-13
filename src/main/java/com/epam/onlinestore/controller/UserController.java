@@ -30,12 +30,6 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{login}")
-    public UserDto getByLogin(@PathVariable String login) {
-        return userService.getByLogin(login);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{email}")
     public UserDto getByEmail(@PathVariable String email) {
         return userService.getByEmail(email);
@@ -48,14 +42,14 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/{login}")
-    public UserDto updateUser(@PathVariable String login, @RequestBody UserDto userDto) {
-        return userService.updateUser(login, userDto);
+    @PutMapping(value = "/{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return userService.updateUser(id, userDto);
     }
 
-    @DeleteMapping(value = "/{login}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        userService.deleteUser(login);
+    @DeleteMapping(value = "/{email}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        userService.deleteUser(email);
         return ResponseEntity.noContent().build();
     }
 }
