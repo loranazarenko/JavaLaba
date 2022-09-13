@@ -1,17 +1,31 @@
 package com.epam.onlinestore.repository;
 
 import com.epam.onlinestore.entity.Product;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ProductRepository {
-    Product getProductsById(long productId);
+@Repository
+public interface ProductRepository extends JpaRepository<Product, String> {
 
     List<Product> findAll();
 
-    Product updateProduct(String name, Product product);
+    Product getProductById(long productId);
 
-    void deleteProduct(Product product);
+    @Query("select pr from Product pr where pr.price=?1")
+    Page<Product> findAllByPrice(double price, Pageable pageable);
+
+    @Modifying
+    @Query("delete from Product pr where pr.id=?1")
+    void deleteProduct(Long id);
+
+    Product getProductByName(String name);
 
     Product save(Product product);
 }

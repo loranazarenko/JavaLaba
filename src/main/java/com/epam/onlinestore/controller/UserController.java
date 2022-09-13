@@ -1,6 +1,6 @@
 package com.epam.onlinestore.controller;
 
-import com.epam.onlinestore.controller.dto.UserDto;
+import com.epam.onlinestore.dto.UserDto;
 import com.epam.onlinestore.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +30,9 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{login}")
-    public UserDto getUser(@PathVariable String login) {
-        return userService.getByLogin(login);
+    @GetMapping(value = "/{email}")
+    public UserDto getByEmail(@PathVariable String email) {
+        return userService.getByEmail(email);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -42,14 +42,14 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping(value = "/{login}")
-    public UserDto updateUser(@PathVariable String login, @RequestBody UserDto userDto) {
-        return userService.updateUser(login, userDto);
+    @PutMapping(value = "/{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return userService.updateUser(id, userDto);
     }
 
-    @DeleteMapping(value = "/{login}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
-        userService.deleteUser(login);
+    @DeleteMapping(value = "/{email}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        userService.deleteUser(email);
         return ResponseEntity.noContent().build();
     }
 }

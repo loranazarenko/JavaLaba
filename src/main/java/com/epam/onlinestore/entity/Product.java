@@ -1,20 +1,27 @@
 package com.epam.onlinestore.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Slf4j
 @Builder
-@Data
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Product implements Serializable {
-    public long id;
+@Entity
+@Table(name = "products")
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
 
     @NotBlank
     public String name;
@@ -22,11 +29,15 @@ public class Product implements Serializable {
     @NotBlank
     public String description;
 
-    @NotBlank
+    @NotNull
     public double price;
 
-    @NotBlank
+    @NotNull
     public int quantity;
+
+   @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     @Override
     public boolean equals(Object o) {
@@ -35,7 +46,7 @@ public class Product implements Serializable {
         if (getClass() != o.getClass()) return false;
 
         Product product = (Product) o;
-        return id == product.id &&
+        return Objects.equals(id, product.id) &&
                 name.equals(product.name) &&
                 Objects.equals(description, product.description) &&
                 price == product.price;
@@ -45,19 +56,11 @@ public class Product implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) id;
+        result = (int) (prime * result + id);
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + (int) price;
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" + "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                '}';
-    }
 }
