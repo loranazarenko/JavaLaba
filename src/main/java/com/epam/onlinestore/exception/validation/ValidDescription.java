@@ -1,4 +1,4 @@
-package com.epam.onlinestore.controller.validation;
+package com.epam.onlinestore.exception.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

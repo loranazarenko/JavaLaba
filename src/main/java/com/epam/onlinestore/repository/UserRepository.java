@@ -1,18 +1,23 @@
 package com.epam.onlinestore.repository;
 
 import com.epam.onlinestore.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository{
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByLogin(String login);
 
     User getByLogin(String login);
 
-    User createUser(User user);
+    @Query("select us from User us where us.email=?1")
+    Optional<User> findByEmail(String email);
 
-    List<User> getAll();
-
-    User updateUser(String login, User user);
-
-    void deleteUser(String login);
+    @Modifying
+    @Query("delete from User us where us.email=?1")
+    void deleteUser(String email);
 }

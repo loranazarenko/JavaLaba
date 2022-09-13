@@ -1,49 +1,61 @@
 package com.epam.onlinestore.entity;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
+@Entity
+@Table(name = "users")
 public class User {
-    private long id;
-    @NotBlank
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "firstname")
     private String firstName;
-    @NotBlank
+
+    @Column(name = "lastname")
     private String lastName;
 
     @NotEmpty(message = "{login.notempty}")
     private String login;
-    @NotBlank
+
+    @NotEmpty
     private String email;
-    @NotBlank
-    @NotNull
+
+    @NotEmpty
     private String password;
 
-    public User(){}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
+    @ToString.Exclude
+    private List<Product> products = new ArrayList<>();
 
-    public User(long id, String firstName, String lastName, String email, String login, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.login = login;
-        this.password = password;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

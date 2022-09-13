@@ -1,4 +1,4 @@
-package com.epam.onlinestore.controller.dto;
+package com.epam.onlinestore.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
@@ -23,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 public class UserDto {
 
     @JsonProperty(access = READ_ONLY)
-    public String id;
+    public Long id;
 
     @NotBlank
     private String firstName;
@@ -35,11 +34,9 @@ public class UserDto {
     private String login;
 
     @NotBlank
-    @NotNull
     private String email;
 
     @NotBlank
-    @NotNull
     private String password;
 
 }

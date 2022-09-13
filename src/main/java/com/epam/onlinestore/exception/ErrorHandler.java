@@ -1,6 +1,5 @@
-package com.epam.onlinestore.controller;
+package com.epam.onlinestore.exception;
 
-import com.epam.onlinestore.exception.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +30,20 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Error handleEntityNotFoundException(EntityNotFoundException ex) {
         log.error("handleEntityNotFoundException: exception {}", ex.getMessage(), ex);
+        return new Error(ex.getMessage());
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Error handleProductNotFoundException(ProductNotFoundException ex) {
+        log.error("handleProductNotFoundException: exception {}", ex.getMessage(), ex);
+        return new Error(ex.getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Error handleUserNotFoundException(UserNotFoundException ex) {
+        log.error("handleUserNotFoundException: exception {}", ex.getMessage(), ex);
         return new Error(ex.getMessage());
     }
 

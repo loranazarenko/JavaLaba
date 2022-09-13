@@ -1,6 +1,6 @@
 package com.epam.onlinestore.service;
 
-import com.epam.onlinestore.controller.dto.ProductDto;
+import com.epam.onlinestore.dto.ProductDto;
 import com.epam.onlinestore.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
